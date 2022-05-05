@@ -8,7 +8,7 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption("AlaCart")   #titelleiste
 
-FPS = 4
+FPS = 60
 
 #colors
 
@@ -29,19 +29,19 @@ chin_card = pygame.transform.scale(chin_image, (card_res_x, card_res_y))
 def check_touch(card):
     mx, my = pygame.mouse.get_pos()
     cardx_t = card.x + card_res_x
-    cardy_t = card.y - card_res_y
+    cardy_t = card.y + card_res_y
 
     if mx >= card.x and mx <= cardx_t:
-        if my <= card.y and my >= cardy_t:
-            return("touch")
+        if my >= card.y and my <= cardy_t:
+            return(True)
 
         else:
-            return ("no touch")
+            return (False)
     else:
-        return ("no touch")
+        return (False)
 
 
-def draw_window(domme_pos, chin_pos):
+def draw_window(domme_pos, chin_pos,):
     WIN.fill(white)
     WIN.blit(domme_card, (domme_pos.x, domme_pos.y))
     WIN.blit(chin_card, (chin_pos.x, chin_pos.y))
@@ -50,7 +50,7 @@ def draw_window(domme_pos, chin_pos):
 
 def main():
 
-    domme_pos = pygame.Rect(0, 800, card_res_x, card_res_y)  # 0, 1080 [200, 800]
+    domme_pos = pygame.Rect(400, 300, card_res_x, card_res_y)
     chin_pos = pygame.Rect(600, 700, card_res_x, card_res_y)
 
     clock = pygame.time.Clock()
@@ -60,7 +60,7 @@ def main():
         mx, my = pygame.mouse.get_pos()
         loc = [mx, my]
 
-        print(check_touch(domme_pos) + str(loc))
+        if check_touch(domme_pos) == True:
 
         clock.tick(FPS)
         for event in pygame.event.get():
