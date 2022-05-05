@@ -20,16 +20,31 @@ card_res_x = 200
 card_res_y = 279
 domme_image = pygame.image.load(os.path.join("Assets", "Domme.jpg"))
 chin_image = pygame.image.load(os.path.join("Assets", "Chin.jpg"))
+bean_image = pygame.image.load(os.path.join("Assets", "bean.jpg"))
+karsten_image = pygame.image.load(os.path.join("Assets", "karsten.jpg"))
+peter_image = pygame.image.load(os.path.join("Assets", "peter.jpg"))
+sponge_image = pygame.image.load(os.path.join("Assets", "sponge.jpg"))
+trump_image = pygame.image.load(os.path.join("Assets", "trump.jpg"))
+wow_image = pygame.image.load(os.path.join("Assets", "wow.jpg"))
+
 
 domme_card = pygame.transform.scale(domme_image, (card_res_x, card_res_y))
 chin_card = pygame.transform.scale(chin_image, (card_res_x, card_res_y))
+karsten_card = pygame.transform.scale(karsten_image, (card_res_x, card_res_y))
+peter_card = pygame.transform.scale(peter_image, (card_res_x, card_res_y))
+sponge_card = pygame.transform.scale(sponge_image, (card_res_x, card_res_y))
+trump_card = pygame.transform.scale(trump_image, (card_res_x, card_res_y))
+wow_card = pygame.transform.scale(wow_image, (card_res_x, card_res_y))
+bean_card = pygame.transform.scale(bean_image, (card_res_x, card_res_y))
+
+
 
 #checkt ob maus karte berührt
 
-def check_touch(card):
+def check_touch(card, res_x, res_y):
     mx, my = pygame.mouse.get_pos()
-    cardx_t = card.x + card_res_x
-    cardy_t = card.y + card_res_y
+    cardx_t = card.x + res_x
+    cardy_t = card.y + res_y
 
     if mx >= card.x and mx <= cardx_t:
         if my >= card.y and my <= cardy_t:
@@ -43,8 +58,8 @@ def check_touch(card):
 
 def draw_window(domme_pos, chin_pos,):
     WIN.fill(white)
-    #WIN.blit(domme_card, (domme_pos.x, domme_pos.y))
-    #WIN.blit(chin_card, (chin_pos.x, chin_pos.y))
+    WIN.blit(wow_card, (domme_pos.x, domme_pos.y))
+    WIN.blit(bean_card, (chin_pos.x, chin_pos.y))
     pygame.display.update()
 
 
