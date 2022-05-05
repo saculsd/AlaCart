@@ -20,9 +20,11 @@ card_res_x = 200
 card_res_y = 279
 domme_image = pygame.image.load(os.path.join("Assets", "Domme.jpg"))
 chin_image = pygame.image.load(os.path.join("Assets", "Chin.jpg"))
+domme_select_image = pygame.image.load(os.path.join("Assets", "Domme_select.jpg"))
 
 domme_card = pygame.transform.scale(domme_image, (card_res_x, card_res_y))
 chin_card = pygame.transform.scale(chin_image, (card_res_x, card_res_y))
+domme_select_card = pygame.transform.scale(domme_select_image, (card_res_x, card_res_y))
 
 #checkt ob maus karte berührt
 
@@ -60,7 +62,7 @@ def main():
         mx, my = pygame.mouse.get_pos()
         loc = [mx, my]
 
-        if check_touch(domme_pos) == True:
+
 
         clock.tick(FPS)
         for event in pygame.event.get():
