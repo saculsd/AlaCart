@@ -22,7 +22,7 @@ async def request_loop():
     global clip_link_old
 
 
-    clip_link = stream_request("schlauster")
+    clip_link = stream_request("sacul_sd")
     if clip_link != None:
         if clip_link != clip_link_old:
             channel = client.get_channel(961274327205048403)

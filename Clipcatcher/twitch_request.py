@@ -37,10 +37,11 @@ def stream_request(login):
         id = d["data"][0]["id"]
 
     d = datetime.datetime.now()
-    time = d + datetime.timedelta(minutes = -6)
+    time = d + datetime.timedelta(hours = - 2, minutes= - 3)
     rfc_time = time.isoformat('T') + "Z"
     clip_data = [make_request("https://api.twitch.tv/helix/clips?broadcaster_id=" + str(id) + "&started_at=" + str(rfc_time) + "&first=1")] #100max
     print(clip_data)
+    print(rfc_time)
 
     for i, c_d in enumerate(clip_data):
         if c_d["data"]:
@@ -53,3 +54,6 @@ def name():
 
 
 
+#2022-04-06T17:37:07Z
+
+#2022-04-06T20:03:38.934708Z
