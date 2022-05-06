@@ -56,17 +56,14 @@ def check_touch(card, res_x, res_y):
         return (False)
 
 
-def draw_window(domme_pos, chin_pos,):
+def draw_window():
     WIN.fill(white)
-    WIN.blit(wow_card, (domme_pos.x, domme_pos.y))
-    WIN.blit(bean_card, (chin_pos.x, chin_pos.y))
     pygame.display.update()
 
 
 def main():
 
-    domme_pos = pygame.Rect(400, 300, card_res_x, card_res_y)
-    chin_pos = pygame.Rect(600, 700, card_res_x, card_res_y)
+    #domme_pos = pygame.Rect(400, 300, card_res_x, card_res_y) example for Rect
 
     clock = pygame.time.Clock()
     run = True
@@ -80,8 +77,8 @@ def main():
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:   #falls quit pygame aus
-                run = False
-        draw_window(domme_pos, chin_pos)
+                run = False 
+        draw_window()
 
     pygame.quit()
 
