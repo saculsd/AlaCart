@@ -1,5 +1,7 @@
 import pygame
 import os
+from network import Network
+
 
 #Variables
 
@@ -10,14 +12,18 @@ pygame.display.set_caption("AlaCart")   #titelleiste
 
 FPS = 60
 
+last_color = 0, 0, 0
 #colors
 
 white = 255, 255, 255
+white_ovwr = 254, 255, 255
+black = 0, 0, 0
 
 #Karten import
 
 card_res_x = 200
 card_res_y = 279
+
 domme_image = pygame.image.load(os.path.join("Assets", "Domme.jpg"))
 chin_image = pygame.image.load(os.path.join("Assets", "Chin.jpg"))
 bean_image = pygame.image.load(os.path.join("Assets", "bean.jpg"))
@@ -55,22 +61,76 @@ def check_touch(card, res_x, res_y):
     else:
         return (False)
 
+    last_color = None
 
-def draw_window():
-    WIN.fill(white)
+def draw_window(color):
+    global last_color
+    if last_color != color:
+        WIN.fill(color)
+
+    last_color = color
     pygame.display.update()
+
+
+def draw_text(text, positionx, postitiony, größe):
+    pygame.init()
+    myfont = pygame.font.SysFont("Comic Sans MS", größe)
+    textsurface = myfont.render(text, False, black)
+    WIN.blit(textsurface, (positionx, postitiony))
+    pygame.display.update()
+
+
+
+
 
 
 def main():
 
     #domme_pos = pygame.Rect(400, 300, card_res_x, card_res_y) example for Rect
 
+    draw_window(white)
+
+
     clock = pygame.time.Clock()
     run = True
+
+    n = Network()
+    players = n.players
+    print(players)
+    rply = "wait-ok"
+
+    if players == 1:
+        i_player = 1
+    else:
+        i_player = 2
+
     while run:
+
+# maus pos grab für checkTouch()
 
         mx, my = pygame.mouse.get_pos()
         loc = [mx, my]
+#networking und überprüfen ob 2 spieler verbunden sind
+
+
+
+        if int(players) >= 3:
+            pygame.quit()
+
+        if players == 2 or rply == "ready-ok":
+            #print("Alle da, du bist Spieler: " + str(i_player))
+            draw_window(white_ovwr)
+            draw_text("Alle Spieler verbunden", 450, 100, 80)
+            rply = n.send("ready")
+
+
+        elif rply == "wait-ok":
+            #print ("Warte, du bist Spieler: " + str(i_player))
+            draw_window(white)
+            draw_text("Warte auf Spieler 2...", 450, 100, 80)
+            rply = n.send("wait")
+
+
 
 
 
@@ -78,7 +138,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:   #falls quit pygame aus
                 run = False 
-        draw_window()
 
     pygame.quit()
 

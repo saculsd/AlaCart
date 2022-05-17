@@ -1,6 +1,9 @@
 from _thread import *
 import socket
 import sys
+import pickle
+
+
 
 server = "192.168.100.147"
 port = 5555
@@ -15,30 +18,62 @@ except socket.error as e:
 s.listen(2)
 print("warte auf verbindeungen, Server gestartet")
 
-def threaded_client(conn):
-    conn.send(str.encode("test"))
-    reply = ""
+
+
+liste = ["ready-not"]
+
+def threaded_client(conn, player):
+
+    conn.send(pickle.dumps(player))
+    reply = 0
     while True:
         try:
-            data = conn.recv(2048)
-            reply = data.decode("utf-8")
+            data = pickle.loads(conn.recv(2048))
+
+            #print(data)
 
             if not data:
                 print("Disconnected")
                 break
-            else:
-                print("recived: ", reply)
-                print("Sending: ", reply)
 
-            conn.sendall(str.encode(reply))
+            else:
+                if data == "wait":
+                    reply = "wait-ok"
+                    print(liste[0])
+
+                if data == "ready" or liste[0] == "ready":
+                    reply = "ready-ok"
+                    liste[0] = "ready"
+                    print(liste)
+
+
+
+
+
+                #print("recived: ", data)
+                #print("Sending: ", reply)
+
+                conn.sendall(pickle.dumps(reply))
+
+
         except:
             break
 
     print("connection lost")
+    list[0] = "ready-not"
     conn.close()
 
-while True:
-    conn, addr = s.accept()
-    print("verbunden mit", addr)
+def connect():
 
-    start_new_thread(threaded_client, (conn,))
+    currentPlayer = 1
+
+    while True:
+        conn, addr = s.accept()
+        print("verbunden mit: ", addr)
+        print(currentPlayer)
+        start_new_thread(threaded_client, (conn, currentPlayer))
+        currentPlayer += 1
+
+
+
+connect()
