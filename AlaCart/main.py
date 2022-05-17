@@ -24,14 +24,14 @@ black = 0, 0, 0
 card_res_x = 200
 card_res_y = 279
 
-domme_image = pygame.image.load(os.path.join("Assets", "Domme.jpg"))
-chin_image = pygame.image.load(os.path.join("Assets", "Chin.jpg"))
-bean_image = pygame.image.load(os.path.join("Assets", "bean.jpg"))
-karsten_image = pygame.image.load(os.path.join("Assets", "karsten.jpg"))
-peter_image = pygame.image.load(os.path.join("Assets", "peter.jpg"))
-sponge_image = pygame.image.load(os.path.join("Assets", "sponge.jpg"))
-trump_image = pygame.image.load(os.path.join("Assets", "trump.jpg"))
-wow_image = pygame.image.load(os.path.join("Assets", "wow.jpg"))
+domme_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "Domme.jpg"))
+chin_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "Chin.jpg"))
+bean_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "bean.jpg"))
+karsten_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "karsten.jpg"))
+peter_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "peter.jpg"))
+sponge_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "sponge.jpg"))
+trump_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "trump.jpg"))
+wow_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "wow.jpg"))
 
 
 domme_card = pygame.transform.scale(domme_image, (card_res_x, card_res_y))
