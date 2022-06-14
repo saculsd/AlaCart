@@ -1,11 +1,13 @@
+import dis
 from _thread import *
 import socket
 import sys
 import pickle
+from network import Disconnect
 
 
 
-server = "192.168.100.147"
+server = "localhost"
 port = 5555
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,7 +22,8 @@ print("warte auf verbindeungen, Server gestartet")
 
 
 
-liste = ["ready-not"]
+d = Disconnect()
+
 
 def threaded_client(conn, player):
 
@@ -37,43 +40,59 @@ def threaded_client(conn, player):
                 break
 
             else:
+
+
+
+
                 if data == "wait":
                     reply = "wait-ok"
-                    print(liste[0])
 
-                if data == "ready" or liste[0] == "ready":
+                if data == "ready" and d.disconnect == False:
                     reply = "ready-ok"
-                    liste[0] = "ready"
-                    print(liste)
+                    d.ready = True
+
+                elif d.ready == True and d.disconnect == False:
+                    reply = "ready-ok"
+
+                else:
+                    reply = "wait-ok"
 
 
-
-
-
-                #print("recived: ", data)
-                #print("Sending: ", reply)
+                print("recived: ", data)
+                print("Sending: ", reply)
 
                 conn.sendall(pickle.dumps(reply))
 
 
-        except:
+        except Exception as e:
+            print(e)
             break
 
     print("connection lost")
-    list[0] = "ready-not"
+    if d.disc() == True:
+        d.all_disconnect = True
+        d.ready = False
+
+
+    d.disconnect = True
     conn.close()
 
-def connect():
 
-    currentPlayer = 1
+currentPlayer = 1
 
-    while True:
-        conn, addr = s.accept()
-        print("verbunden mit: ", addr)
-        print(currentPlayer)
-        start_new_thread(threaded_client, (conn, currentPlayer))
-        currentPlayer += 1
+while True:
+    conn, addr = s.accept()
+
+    if d.disc() == True:
+        currentPlayer -= 1
+        d.disconnect = False
+        if d.all_disc() == True:
+            currentPlayer -= 1
+            d.all_disconnect = False
+
+    print("verbunden mit: ", addr, f" spieler -> {currentPlayer}")
+    start_new_thread(threaded_client, (conn, currentPlayer))
+    currentPlayer += 1
 
 
 
-connect()

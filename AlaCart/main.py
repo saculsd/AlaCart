@@ -1,6 +1,7 @@
 import pygame
 import os
-from network import Network
+from network import *
+from time import *
 
 
 #Variables
@@ -13,6 +14,7 @@ pygame.display.set_caption("AlaCart")   #titelleiste
 FPS = 60
 
 last_color = 0, 0, 0
+
 #colors
 
 white = 255, 255, 255
@@ -24,14 +26,14 @@ black = 0, 0, 0
 card_res_x = 200
 card_res_y = 279
 
-domme_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "Domme.jpg"))
-chin_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "Chin.jpg"))
-bean_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "bean.jpg"))
-karsten_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "karsten.jpg"))
-peter_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "peter.jpg"))
-sponge_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "sponge.jpg"))
-trump_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "trump.jpg"))
-wow_image = pygame.image.load(os.path.join("../../../PycharmProjects/AlaCart/Assets", "wow.jpg"))
+domme_image = pygame.image.load(os.path.join("./Assets", "Domme.jpg"))
+chin_image = pygame.image.load(os.path.join("./Assets", "Chin.jpg"))
+bean_image = pygame.image.load(os.path.join("./Assets", "bean.jpg"))
+karsten_image = pygame.image.load(os.path.join("./Assets", "karsten.jpg"))
+peter_image = pygame.image.load(os.path.join("./Assets", "peter.jpg"))
+sponge_image = pygame.image.load(os.path.join("./Assets", "sponge.jpg"))
+trump_image = pygame.image.load(os.path.join("./Assets", "trump.jpg"))
+wow_image = pygame.image.load(os.path.join("./Assets", "wow.jpg"))
 
 
 domme_card = pygame.transform.scale(domme_image, (card_res_x, card_res_y))
@@ -94,10 +96,14 @@ def main():
     clock = pygame.time.Clock()
     run = True
 
+
+
+    rply = "wait-ok"
+    d = Disconnect()
     n = Network()
     players = n.players
     print(players)
-    rply = "wait-ok"
+
 
     if players == 1:
         i_player = 1
@@ -110,34 +116,37 @@ def main():
 
         mx, my = pygame.mouse.get_pos()
         loc = [mx, my]
+
 #networking und überprüfen ob 2 spieler verbunden sind
 
+        players = n.players
 
 
-        if int(players) >= 3:
-            pygame.quit()
 
-        if players == 2 or rply == "ready-ok":
-            #print("Alle da, du bist Spieler: " + str(i_player))
-            draw_window(white_ovwr)
-            draw_text("Alle Spieler verbunden", 450, 100, 80)
+        if (players == 2 or rply == "ready-ok") and d.disc() == False:
             rply = n.send("ready")
+            draw_window(white_ovwr)
+            draw_text("Alle spieler verbunden", 550, 100, 80)
 
 
-        elif rply == "wait-ok":
-            #print ("Warte, du bist Spieler: " + str(i_player))
+
+        if rply == "wait-ok":
             draw_window(white)
-            draw_text("Warte auf Spieler 2...", 450, 100, 80)
+            draw_text("warte auf spieler 2", 600, 100, 80)
             rply = n.send("wait")
 
 
-
+        if rply == "no_conn":
+            draw_window(white_ovwr)
+            draw_text("Keine verbindung zum Server", 500, 100, 80)
+            sleep(3)
+            pygame.quit()
 
 
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:   #falls quit pygame aus
-                run = False 
+                run = False
 
     pygame.quit()
 
